@@ -4,10 +4,16 @@ const bodyParser= require('body-parser')
 const initDB = require('./DAO/models/index')
 const users = require('./DAO/models/users')
 const historias = require('./DAO/models/histories')
+const session = require('express-session')
 const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(session({
+    secret: 'QGnoParc',
+    resave: false,
+    saveUninitialized: true
+}))
 
 app.get("/createDatabase", () => {
     initDB.createDatabase()
@@ -19,11 +25,18 @@ app.get("/deleteDatabase", () => {
 
 //Users START
 app.post('/users', (req, res) => {
-    if (req.body.username && req.body.email) {
-        users.createUser(req.body.username, req.body.email)
-        res.send({username: req.body.username, email: req.body.email})
+    users.createUser(req.body)
+    res.send({username: req.body.username, email: req.body.email})
+})
+
+app.post('/login', async (req, res) => {
+    let email = await users.userLogin(req.body)
+    console.log(email)
+    if (email){
+        req.session.email = email
+        res.send({login: true})
     } else {
-        console.log('Missing a parameter')
+        res.send({login: false})
     }
 })
 

@@ -5,7 +5,7 @@ module.exports = {
         db.query('CREATE DATABASE IF NOT EXISTS qgparce;')
         db.query('USE qgparce;')
         //Tabla de Usuarios
-        db.query('CREATE TABLE IF NOT EXISTS users(username varchar(255), email varchar(255), PRIMARY KEY(username));', function(error, result, fields) {
+        db.query('CREATE TABLE IF NOT EXISTS users(username varchar(255), email varchar(255), password varchar(255), PRIMARY KEY(username));', function(error, result, fields) {
            if(error) console.log(error)
            console.log(result)
         })
@@ -16,7 +16,8 @@ module.exports = {
        })
     
     },
-    deleteDatabase : function(){ 
+    deleteDatabase : function(){
+        db.query('USE qgparce;')
         db.query('DROP TABLE historias', function(error, result, fields) {
             if(error) console.log(error)
             console.log(result)
