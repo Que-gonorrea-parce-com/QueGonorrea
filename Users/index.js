@@ -29,6 +29,16 @@ app.post('/users', (req, res) => {
     res.send({username: req.body.username, email: req.body.email})
 })
 
+app.put('/follow', async (req, res) => {
+    response = users.followUser(req.body.user, req.body.follow)
+    res.send("all gucci")
+})
+
+app.put('/unfollow', async (req, res) => {
+    response = users.unfollowUser(req.body.user, req.body.follow)
+    res.send("all gucci")
+})
+
 app.post('/login', async (req, res) => {
     let email = await users.userLogin(req.body)
     console.log(email)
