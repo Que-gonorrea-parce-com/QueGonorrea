@@ -86,6 +86,12 @@ app.get('/histories', async (req, res) => {
     let usersArray = await historias.getAllHistories(req.query.username)
     res.send(usersArray)
 })
+
+app.get('/histories/reaction', async (req, res) => {
+    console.log(req.query.reaction)
+    let usersArray = await historias.getAllHistoriesByReaction(req.query.username, req.query.reaction)
+    res.send(usersArray)
+})
 //Historias END
 
 

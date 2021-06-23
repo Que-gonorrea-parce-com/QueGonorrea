@@ -21,6 +21,14 @@ module.exports = {
             })
         })
     },
+    getAllHistoriesByReaction : function(username, reaction) {
+        return new Promise(function(resolve, reject){
+            db.query(`SELECT * FROM qgparce.historias WHERE user_username="${username}" AND reaction="${reaction}"`, function(err, result,fields) {
+                if(err) return err
+                resolve(result) 
+            })
+        })
+    },
     getOneHistory : function(id){
         return new Promise(function(resolve, reject){
             db.query(`SELECT * FROM qgparce.historias WHERE id="${id}"`, function(err, result, fields) {

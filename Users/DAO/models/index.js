@@ -11,7 +11,7 @@ module.exports = {
                 console.log(result)
             })
             //Tabla de Historias
-            db.query('CREATE TABLE IF NOT EXISTS historias(id int NOT NULL AUTO_INCREMENT, body varchar(510), reaction varchar(64), user_username varchar(255), PRIMARY KEY (id), FOREIGN KEY (user_username) REFERENCES users(username))', function(error, result, fields) {
+            db.query('CREATE TABLE IF NOT EXISTS historias(id int NOT NULL AUTO_INCREMENT, body varchar(510), reaction varchar(64), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP , user_username varchar(255), PRIMARY KEY (id), FOREIGN KEY (user_username) REFERENCES users(username))', function(error, result, fields) {
                 if(error) console.log(error)
                 console.log(result)
             })
