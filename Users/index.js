@@ -5,6 +5,7 @@ const initDB = require('./DAO/models/index')
 const users = require('./DAO/models/users')
 const historias = require('./DAO/models/histories')
 const comentarios = require('./DAO/models/coments')
+const reacciones = require('./DAO/models/reacciones')
 
 const session = require('express-session')
 const app = express()
@@ -73,10 +74,10 @@ app.patch('/users', async (req, res) => {
 
 //Historias START
 app.post('/histories', async (req, res) => {
-    if (req.body.body && req.body.reaction && req.body.user_username) {
+    if (req.body.body && req.body.user_username) {
         let createdHistory = await historias.createHistory(req.body)
         console.log(createdHistory)
-        res.send({body: req.body.body, reaction: req.body.reaction})
+        res.send({body: req.body.body})
     } else {
         console.log('Missing a parameter')
     }
@@ -109,8 +110,24 @@ app.get('/comentario', async (req, res) => {
     let commentsArray = await comentarios.getAllComments(req.query.historyId)
     res.send(commentsArray)
 })
-
 //Comentarios END
+
+
+//Reacciones START
+app.post('/reaccion', async (req, res) => {
+    if (req.body.id && req.body.reaccion && req.body.cantidad) {
+        let comment = await reacciones.agregarReaccion(req.body)
+        if(comment == -1) res.send({"error": "History id not found"})
+        res.send({reaccion: req.body.reaccion, cantidad: req.body.cantidad})
+    }
+})
+
+app.get('/reaccion', async (req, res) => {
+    console.log(req.query.historyId)
+    let commentsArray = await reacciones.obtenerReaccionesDe1Historia(req.query.historyId)
+    res.send(commentsArray)
+})
+//Reacciones END
 
 
 app.listen(3000, () => {

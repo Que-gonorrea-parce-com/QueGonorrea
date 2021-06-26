@@ -11,7 +11,7 @@ module.exports = {
                 console.log(result)
             })
             //Tabla de Historias
-            db.query('CREATE TABLE IF NOT EXISTS historias(id int NOT NULL AUTO_INCREMENT, body varchar(510), reaction varchar(64), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP , user_username varchar(255), PRIMARY KEY (id), FOREIGN KEY (user_username) REFERENCES users(username))', function(error, result, fields) {
+            db.query('CREATE TABLE IF NOT EXISTS historias(id int NOT NULL AUTO_INCREMENT, body varchar(510), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP , user_username varchar(255), PRIMARY KEY (id), FOREIGN KEY (user_username) REFERENCES users(username))', function(error, result, fields) {
                 if(error) console.log(error)
                 console.log(result)
             })
@@ -19,6 +19,10 @@ module.exports = {
             db.query('CREATE TABLE IF NOT EXISTS comentarios(id int NOT NULL AUTO_INCREMENT, body varchar(510), history_id int, PRIMARY KEY (id), FOREIGN KEY (history_id) REFERENCES historias(id))', function(error, result, fields) {
                 if(error) console.log(error)
                 console.log(result)
+            })
+            db.query('CREATE TABLE IF NOT EXISTS reacciones(id int NOT NULL AUTO_INCREMENT, no_pues_morite int, mera_vuelta int, ah_bueno_pa_saber int, a_lo_bien int, se_estan_es_pasando int, que_gonorrea_parce int, history_id int, PRIMARY KEY (id), FOREIGN KEY (history_id) REFERENCES historias(id))', function(error, result, fields) {
+                if(error) console.log(error)
+                console.log(result) 
             })
         } catch (error) {
             console.log("Error creating database: ", error)
@@ -28,6 +32,9 @@ module.exports = {
     deleteDatabase : function(){
         try {
             db.query('USE qgparce;')
+            db.query('DROP TABLE reacciones', function(error, result, fields) {
+                if(error) console.log(error)
+            })
             db.query('DROP TABLE comentarios', function(error, result, fields) {
                 if(error) console.log(error)
             })

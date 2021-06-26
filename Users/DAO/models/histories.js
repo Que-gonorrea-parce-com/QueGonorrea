@@ -3,9 +3,9 @@ const db = require('../db-connection')
 module.exports = {
     createHistory : function(data){
         return new Promise(function(resolve, reject) {
-            const {body, reaction, user_username} = data
+            const {body, user_username} = data
             db.connect(function(err) {
-                db.query(`INSERT INTO qgparce.historias (body, reaction, user_username) VALUES ('${body}', '${reaction}', '${user_username}')`, 
+                db.query(`INSERT INTO qgparce.historias (body, user_username) VALUES ('${body}', '${user_username}')`, 
                 function(err, result, fields) {
                     if (err) return err
                     resolve(result)
