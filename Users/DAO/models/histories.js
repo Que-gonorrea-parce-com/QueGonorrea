@@ -1,4 +1,5 @@
 const db = require('../db-connection')
+const historias = require('./histories')
 
 module.exports = {
     createHistory : function(data){
@@ -24,6 +25,14 @@ module.exports = {
     getAllHistoriesByReaction : function(username, reaction) {
         return new Promise(function(resolve, reject){
             db.query(`SELECT * FROM qgparce.historias WHERE user_username="${username}" AND reaction="${reaction}"`, function(err, result,fields) {
+                if(err) return err
+                resolve(result) 
+            })
+        })
+    },
+    getLatestHistory: function() {
+        return new Promise(function(resolve, reject){
+            db.query(`SELECT *  FROM qgparce.historias ORDER BY id DESC LIMIT 1`, function(err, result,fields) {
                 if(err) return err
                 resolve(result) 
             })

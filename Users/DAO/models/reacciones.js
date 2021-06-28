@@ -1,14 +1,17 @@
 const db = require('../db-connection')
-const historias = require('./histories')
 
 module.exports = {
-    agregarReaccion : async function(data) {
-        const {id, reaccion, cantidad} = data
-        let historia = await historias.getOneHistory(id)
-        if(historia.length === 0) return -1
-        db.query(`INSERT INTO qgparce.reacciones (${reaccion}, history_id) VALUES (${cantidad}, ${id})`, 
+    createReaction: function (id) {
+        db.query(`INSERT INTO qgparce.reacciones (no_pues_morite, mera_vuelta, ah_bueno_pa_saber, a_lo_bien, se_estan_es_pasando, que_gonorrea_parce, history_id) VALUES (0,0,0,0,0,0, ${id})`, 
         function(err, result, fields) {
-            if (err) return err
+            if (err) return -1
+        })
+        return 0
+    },
+    agregarReaccion : async function(data, cantidad) {
+        const {history_id, reaccion} = data
+        db.query(`UPDATE qgparce.reacciones SET ${reaccion}=${cantidad} WHERE history_id=${history_id}`, function(err, result, fields) {
+            if(err) return err
         })
         return 0
     },

@@ -75,9 +75,11 @@ app.patch('/users', async (req, res) => {
 //Historias START
 app.post('/histories', async (req, res) => {
     if (req.body.body && req.body.user_username) {
-        let createdHistory = await historias.createHistory(req.body)
-        console.log(createdHistory)
-        res.send({body: req.body.body})
+        await historias.createHistory(req.body)
+        let latestHistory = await historias.getLatestHistory()
+        let history_id = latestHistory[0].id
+        reacciones.createReaction(history_id)
+        res.send({body: req.body.body, id: history_id})
     } else {
         console.log('Missing a parameter')
     }
@@ -115,15 +117,17 @@ app.get('/comentario', async (req, res) => {
 
 //Reacciones START
 app.post('/reaccion', async (req, res) => {
-    if (req.body.id && req.body.reaccion && req.body.cantidad) {
-        let comment = await reacciones.agregarReaccion(req.body)
+    if (req.body.history_id && req.body.reaccion) {
+        let newReaction = req.body.reaccion
+        let reaccion = await reacciones.obtenerReaccionesDe1Historia(req.body.history_id)
+        let cantidad = reaccion[0][newReaction] + 1
+        let comment = await reacciones.agregarReaccion(req.body, cantidad)
         if(comment == -1) res.send({"error": "History id not found"})
         res.send({reaccion: req.body.reaccion, cantidad: req.body.cantidad})
     }
 })
 
 app.get('/reaccion', async (req, res) => {
-    console.log(req.query.historyId)
     let commentsArray = await reacciones.obtenerReaccionesDe1Historia(req.query.historyId)
     res.send(commentsArray)
 })
