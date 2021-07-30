@@ -1,9 +1,9 @@
 const mysql = require('mysql')
 
 const db = mysql.createConnection({
-    host: 'qgp-cluster-instance-1.cv9vfs7oprmu.us-east-1.rds.amazonaws.com',
-    user: 'admin',
-    password: 'nimda123',
+    host: '',
+    user: '',
+    password: '',
 })
 
 db.connect(function(err) {
